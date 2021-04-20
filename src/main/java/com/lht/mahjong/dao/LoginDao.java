@@ -1,4 +1,8 @@
 package com.lht.mahjong.dao;
 
-public interface LoginDao {
+import com.lht.mahjong.pojo.Account;
+import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
+
+public interface LoginDao extends ReactiveMongoRepository<Integer, Account> {
+
 }
