@@ -18,14 +18,15 @@ public class LoginCache {
     @Autowired
     private StringRedisTemplate redisTemplate;
 
-    public Account getAccount(String accountName) {
+    public Optional<Account> getAccount(String accountName) {
         String json = (String) redisTemplate.opsForHash().get(RedisKey.account.name(), accountName);
         if (json == null) {
             Optional<Account> account = loginDao.findById(accountName);
             account.ifPresent(this::saveByMongo);
-            return account.orElse(new Account());
+            return account;
         }
-        return JacksonUtil.toObject(json, Account.class);
+        Account account = JacksonUtil.toObject(json, Account.class);
+        return Optional.of(account);
     }
 
     public void saveAccount(Account account) {

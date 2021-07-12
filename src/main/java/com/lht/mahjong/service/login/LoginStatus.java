@@ -1,4 +1,4 @@
-package com.lht.mahjong.servide;
+package com.lht.mahjong.service.login;
 
 public enum LoginStatus {
     SUCCESS(0),

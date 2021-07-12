@@ -4,15 +4,13 @@ import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.List;
-
 @Document
 @Data
-public class Account {
+public class Player {
     @Id
-    private String account;
+    private long playerId;
 
-    private String password;
+    private String playerName;
 
-    private List<Long> roleList;
+    private int card;
 }

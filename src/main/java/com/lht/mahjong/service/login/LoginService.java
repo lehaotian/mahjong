@@ -1,9 +1,11 @@
-package com.lht.mahjong.servide;
+package com.lht.mahjong.service.login;
 
 import com.lht.mahjong.cache.LoginCache;
 import com.lht.mahjong.pojo.Account;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class LoginService {
@@ -11,22 +13,24 @@ public class LoginService {
     private LoginCache loginCache;
 
     public LoginStatus login(String accountName, String password) {
-        Account account = loginCache.getAccount(accountName);
-        if (account.getAccount() == null) {
-            createAccount(account, accountName, password);
-            return LoginStatus.CREATE_NEW_ACCOUNT;
-        } else {
-            if (password.equals(account.getPassword())) {
+        Optional<Account> account = loginCache.getAccount(accountName);
+        if (account.isPresent()) {
+            if (password.equals(account.get().getPassword())) {
                 return LoginStatus.SUCCESS;
             } else {
                 return LoginStatus.PASSWORD_ERROR;
             }
+        } else {
+            createAccount(accountName, password);
+            return LoginStatus.CREATE_NEW_ACCOUNT;
         }
     }
 
-    public void createAccount(Account account, String accountName, String password) {
+    public Account createAccount(String accountName, String password) {
+        Account account = new Account();
         account.setAccount(accountName);
         account.setPassword(password);
         loginCache.saveAccount(account);
+        return account;
     }
 }

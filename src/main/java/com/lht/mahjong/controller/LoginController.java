@@ -1,7 +1,8 @@
 package com.lht.mahjong.controller;
 
-import com.lht.mahjong.servide.LoginService;
-import com.lht.mahjong.servide.LoginStatus;
+import com.lht.mahjong.pojo.Account;
+import com.lht.mahjong.service.login.LoginService;
+import com.lht.mahjong.service.login.LoginStatus;
 import com.lht.mahjong.util.JacksonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,8 +14,8 @@ public class LoginController {
     private LoginService loginService;
 
     @GetMapping("/login")
-    public String login(String accountName, String password) {
-        LoginStatus login = loginService.login(accountName, password);
+    public String login(Account account) {
+        LoginStatus login = loginService.login(account.getAccount(), account.getPassword());
         return JacksonUtil.toString(login);
     }
 }
